@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Checkout</string>
+    <string name="error_msg_mail">Please Enter Valid Unique TransactionID</string>
+    <string name="error_msg_phone">Enter Valid Phone</string>
+    <string name="error_msg_product">Enter Valid Name</string>
+    <string name="error_msg_amount">Please Enter Valid Amount</string>
+</resources>
