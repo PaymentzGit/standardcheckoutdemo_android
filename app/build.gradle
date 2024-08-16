@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 34
+    namespace "com.paymentz.checkoutexamplesdk"
     defaultConfig {
         applicationId "com.paymentz.checkoutexamplesdk"
         minSdkVersion 17
-        targetSdkVersion 27
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,7 +26,7 @@ android {
     }
 }*/
 
-configurations.all {
+configurations.configureEach {
     resolutionStrategy.force 'com.android.support:support-annotations:23.1.0'
 }
 

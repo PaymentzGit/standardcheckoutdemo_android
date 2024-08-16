@@ -1,5 +1,10 @@
 package com.paymentz.checkoutexamplesdk;
 
+
+import static com.paymentz.checkoutexamplesdk.R.id.*;
+import static com.paymentz.checkoutexamplesdk.R.id.tietdescription;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -11,8 +16,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.paymentz.pz_checkout_sdk.model.PZCheckout;
 import com.paymentz.pz_checkout_sdk.model.PayBrand;
-import com.paymentz.pz_checkout_sdk.model.EncryptPay;
 import com.paymentz.pz_checkout_sdk.model.PayMode;
 import com.paymentz.pz_checkout_sdk.model.PayResult;
 import com.paymentz.pz_checkout_sdk.model.RequestParameters;
@@ -41,8 +46,8 @@ public class CheckoutActivity extends AppCompatActivity {
         tildescription = (TextInputLayout) findViewById(R.id.tildescription);
         tilamount = (TextInputLayout) findViewById(R.id.tilamount);
 
-        etorderdescription = (TextInputEditText) findViewById(R.id.tietdescription);
-        etamount = (TextInputEditText) findViewById(R.id.tietamount);
+        etorderdescription = (TextInputEditText) findViewById(tietdescription);
+        etamount = (TextInputEditText) findViewById(tietamount);
 
         pay = (Button) findViewById(R.id.btn_payNow);
         etorderdescription.addTextChangedListener(new MyTextWatcher(etorderdescription));
@@ -52,7 +57,6 @@ public class CheckoutActivity extends AppCompatActivity {
         requestParameters.setToType("paymentz");
         requestParameters.setMemberKey("bzI93aEQeYDeE50Pa929NiDk3us8XTbU");
         requestParameters.setOrderDescription("Testing Transaction");
-        requestParameters.setMerchantRedirectUrl("www.paymentz.com");
         requestParameters.setCountry("IN");
         requestParameters.setCity("Mumbai");
         requestParameters.setState("MH");
@@ -61,14 +65,11 @@ public class CheckoutActivity extends AppCompatActivity {
         requestParameters.setTelnocc("091");
         requestParameters.setPhone("9854785236");
         requestParameters.setEmail("udaybhan.rajbhar@paymentz.com");
-        requestParameters.setIpAddress("192.168.0.1");
-        requestParameters.setPaymentBrand(PayBrand.VISA);
-        requestParameters.setPaymentMode(PayMode.CC);
+        requestParameters.setPaymentBrand(String.valueOf(PayBrand.VISA));
+        requestParameters.setPaymentMode(String.valueOf(PayMode.CC));
         requestParameters.setCurrency("USD");
-        requestParameters.setTmplCurrency("USD");
-        requestParameters.setTerminalId("3793");
-        requestParameters.setVersion("1.0");
-        requestParameters.setHostUrl("https://preprod.paymentz.com/transaction/Checkout");
+        requestParameters.setTerminalId("7079");
+        requestParameters.setHostUrl("https://sandbox.paymentplug.com/transaction/Checkout");
 
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +86,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 } else {
                     amount = Float.parseFloat(etamount.getText().toString());
                     requestParameters.setAmount(String.format(Locale.US, "%.2f", amount));
-                    requestParameters.setTmplAmount(String.format(Locale.US, "%.2f", amount));
                 }
                 submitForm();
             }
@@ -100,7 +100,8 @@ public class CheckoutActivity extends AppCompatActivity {
         if (!validateAmount()) {
             return;
         }
-        EncryptPay.initPayment(CheckoutActivity.this, requestParameters);
+        PZCheckout pzCheckout = new PZCheckout();
+        pzCheckout.initPayment(CheckoutActivity.this, requestParameters);
     }
 
     private boolean validateMemberid() {
@@ -146,8 +147,9 @@ public class CheckoutActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }
 
+        @SuppressLint("NonConstantResourceId")
         public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
+            /*switch (view.getId()) {
 
                 case R.id.tietdescription:
                     validateMemberid();
@@ -157,7 +159,9 @@ public class CheckoutActivity extends AppCompatActivity {
                     break;
 
 
-            }
+                default:
+                    throw new IllegalStateException("Unexpected value: " + view.getId());
+            }*/
         }
     }
 
@@ -165,11 +169,11 @@ public class CheckoutActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // First you need to check the request code
-        if (requestCode == EncryptPay.PAYMENT_REQUEST_CODE) {
+        if (requestCode == PZCheckout.PAYMENT_REQUEST_CODE) {
             // After this you need to check the result code
             if (resultCode == RESULT_OK) {
                 // If its ok, you can get the payment result as described below
-                PayResult paymentResult = (PayResult) data.getExtras().get(EncryptPay.PAYMENT_RESULT);
+                PayResult paymentResult = (PayResult) data.getExtras().get(PZCheckout.PAYMENT_RESULT);
                 Intent intent = new Intent(getApplicationContext(), PaymentSuccessActivity.class);
                 intent.putExtra("result", paymentResult.toJsonString());
                 startActivity(intent);

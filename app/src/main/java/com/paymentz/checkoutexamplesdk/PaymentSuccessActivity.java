@@ -42,8 +42,6 @@ public class PaymentSuccessActivity extends AppCompatActivity
                     +"TimeStamp:" +paymentResultJson.getString("timestamp") + "\n"
                     +"Result Code:" +paymentResultJson.getString("resultCode") + "\n"
                     +"Result Description:" +paymentResultJson.getString("resultDescription") + "\n"
-                    +"Card Bin:" +paymentResultJson.getString("cardBin") + "\n"
-                    +"Card Last 4 Digit:" +paymentResultJson.getString("cardLast4Digits") + "\n"
                     +"Email Id:" +paymentResultJson.getString("custEmail") + "\n"
                     +"Payment Mode:" +paymentResultJson.getString("paymentMode") + "\n"
                     +"Payment Brand:" +paymentResultJson.getString("paymentBrand"));
