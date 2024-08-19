@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PaymentSuccessActivity">
+    tools:context=".activities.PaymentSuccessActivity">
 
     <TextView
         android:id="@+id/demoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tracking"/>
+        android:text=""/>
 
 </LinearLayout>

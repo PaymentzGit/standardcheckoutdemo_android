@@ -1,4 +1,4 @@
-package com.paymentz.checkoutexamplesdk;
+package com.paymentz.checkoutexamplesdk.activities;
 
 
 import static com.paymentz.checkoutexamplesdk.R.id.*;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.paymentz.checkoutexamplesdk.R;
 import com.paymentz.pz_checkout_sdk.model.PZCheckout;
 import com.paymentz.pz_checkout_sdk.model.PayBrand;
 import com.paymentz.pz_checkout_sdk.model.PayMode;
