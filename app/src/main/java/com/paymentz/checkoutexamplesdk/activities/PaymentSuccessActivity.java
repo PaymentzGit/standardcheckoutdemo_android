@@ -37,7 +37,7 @@ public class PaymentSuccessActivity extends AppCompatActivity
                 if (paymentResultJson.getString("resultCode").equals("00001")) {
                     getDialogMsg("Success", "Transaction Success", getResources().getDrawable(R.drawable.ic_done));
                 } else {
-                    getDialogMsg("fail", "Transaction Failed", getResources().getDrawable(R.drawable.ic_fail24dp));
+                    getDialogMsg("Fail", "Transaction Failed", getResources().getDrawable(R.drawable.ic_fail24dp));
                 }
 
 //             demoText.setText("Tracking Id: "+paymentResultJson.getString("trackingId")+ "\n"
