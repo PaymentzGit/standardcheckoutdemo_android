@@ -1,9 +1,9 @@
 package com.paymentz.checkoutexamplesdk.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,7 @@ import org.json.JSONObject;
  * Created by Admin on 9/8/2018.
  */
 
-public class PaymentSuccessActivity extends Activity {
+public class PaymentSuccessActivity extends AppCompatActivity {
     public TextView demoText;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class PaymentSuccessActivity extends Activity {
 
             }
         } catch (JSONException e) {
-            Log.e(this.getLocalClassName(),e.getLocalizedMessage());
+            Log.e(this.getLocalClassName(),e.toString());
         }
     }
 

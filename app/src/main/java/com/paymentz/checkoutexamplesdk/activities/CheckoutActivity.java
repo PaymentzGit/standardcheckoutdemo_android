@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -29,7 +30,7 @@ import java.util.Locale;
  * Created by Admin on 8/23/2018.
  */
 
-public class CheckoutActivity extends Activity implements PZCheckout.WebCheckoutListener {
+public class CheckoutActivity extends AppCompatActivity implements PZCheckout.WebCheckoutListener {
 
     public TextInputLayout tildescription, tilamount;
     public TextInputEditText etamount, etorderdescription;
@@ -43,6 +44,9 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkoutinfo);
+//        CheckoutActivity.this.setTitle("Checkout");
+        getSupportActionBar().setTitle("Checkout");
+
 
         tildescription = findViewById(R.id.tildescription);
         tilamount = findViewById(R.id.tilamount);
