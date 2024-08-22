@@ -44,13 +44,13 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkoutinfo);
 
-        tildescription = (TextInputLayout) findViewById(R.id.tildescription);
-        tilamount = (TextInputLayout) findViewById(R.id.tilamount);
+        tildescription = findViewById(R.id.tildescription);
+        tilamount = findViewById(R.id.tilamount);
 
-        etorderdescription = (TextInputEditText) findViewById(tietdescription);
-        etamount = (TextInputEditText) findViewById(tietamount);
+        etorderdescription = findViewById(tietdescription);
+        etamount = findViewById(tietamount);
 
-        pay = (Button) findViewById(R.id.btn_payNow);
+        pay = findViewById(R.id.btn_payNow);
         etorderdescription.addTextChangedListener(new MyTextWatcher(etorderdescription));
         etamount.addTextChangedListener(new MyTextWatcher(etamount));
 
@@ -72,9 +72,7 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
         requestParameters.setTerminalId("7079");
         requestParameters.setHostUrl("https://sandbox.paymentplug.com/transaction/Checkout");
 
-        pay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        pay.setOnClickListener(v ->  {
                 if (!validateMemberId()) {
                     return;
                 } else {
@@ -89,7 +87,7 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
                     requestParameters.setAmount(String.format(Locale.US, "%.2f", amount));
                 }
                 submitForm();
-            }
+
         });
     }
 
