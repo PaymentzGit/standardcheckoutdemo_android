@@ -1,4 +1,4 @@
-package com.paymentz.checkoutexamplesdk;
+package com.paymentz.checkoutexamplesdk.activities;
 
 
 import static com.paymentz.checkoutexamplesdk.R.id.*;
@@ -14,12 +14,14 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import com.paymentz.pz_checkout_sdk.*;
+
+
+import com.paymentz.checkoutexamplesdk.R;
+import com.paymentz.pz_checkout_sdk.PZCheckout;
 import com.paymentz.pz_checkout_sdk.model.PayBrand;
 import com.paymentz.pz_checkout_sdk.model.PayMode;
 import com.paymentz.pz_checkout_sdk.model.PayRequest;
 import com.paymentz.pz_checkout_sdk.model.PayResult;
-
 
 import java.util.Locale;
 
@@ -73,17 +75,17 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateMemberid()) {
+                if (!validateMemberId()) {
                     return;
                 } else {
-                    mtransactionid = etorderdescription.getText().toString();
+                    mtransactionid = String.valueOf(etorderdescription.getText());
                     requestParameters.setMerchantTransactionId(mtransactionid);
                 }
 
                 if (!validateAmount()) {
                     return;
                 } else {
-                    amount = Float.parseFloat(etamount.getText().toString());
+                    amount = Float.parseFloat(String.valueOf(etamount.getText()));
                     requestParameters.setAmount(String.format(Locale.US, "%.2f", amount));
                 }
                 submitForm();
@@ -93,7 +95,7 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
 
     public void submitForm() {
 
-        if (!validateMemberid()) {
+        if (!validateMemberId()) {
             return;
         }
         if (!validateAmount()) {
@@ -105,7 +107,7 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
         pzCheckout.initPayment(CheckoutActivity.this, requestParameters,webCheckoutListener);
     }
 
-    private boolean validateMemberid() {
+    private boolean validateMemberId() {
         if (etorderdescription.getText().toString().trim().isEmpty()) {
             tildescription.setError(getString(R.string.error_msg_mail));
             requestFocus(etorderdescription);
@@ -124,7 +126,6 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
         } else {
             tilamount.setErrorEnabled(false);
         }
-
         return true;
     }
 
@@ -152,7 +153,7 @@ public class CheckoutActivity extends Activity implements PZCheckout.WebCheckout
     }
 
 
-    private class MyTextWatcher implements TextWatcher {
+    private static class MyTextWatcher implements TextWatcher {
 
         private View view;
 
