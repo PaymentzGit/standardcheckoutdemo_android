@@ -3,25 +3,25 @@ package com.paymentz.checkoutexamplesdk.activities;
 
 import static com.paymentz.checkoutexamplesdk.R.id.*;
 import static com.paymentz.checkoutexamplesdk.R.id.tietdescription;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+
 import com.paymentz.checkoutexamplesdk.R;
-import com.paymentz.pz_checkout_sdk.model.PZCheckout;
+import com.paymentz.pz_checkout_sdk.PZCheckout;
 import com.paymentz.pz_checkout_sdk.model.PayBrand;
 import com.paymentz.pz_checkout_sdk.model.PayMode;
+import com.paymentz.pz_checkout_sdk.model.PayRequest;
 import com.paymentz.pz_checkout_sdk.model.PayResult;
-import com.paymentz.pz_checkout_sdk.model.RequestParameters;
 
 import java.util.Locale;
 
@@ -29,7 +29,7 @@ import java.util.Locale;
  * Created by Admin on 8/23/2018.
  */
 
-public class CheckoutActivity extends AppCompatActivity {
+public class CheckoutActivity extends Activity implements PZCheckout.WebCheckoutListener {
 
     public TextInputLayout tildescription, tilamount;
     public TextInputEditText etamount, etorderdescription;
@@ -37,20 +37,20 @@ public class CheckoutActivity extends AppCompatActivity {
     public Float amount;
     private Button pay;
 
-    final RequestParameters requestParameters = new RequestParameters();
+    final PayRequest requestParameters = new PayRequest();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkoutinfo);
 
-        tildescription = (TextInputLayout) findViewById(R.id.tildescription);
-        tilamount = (TextInputLayout) findViewById(R.id.tilamount);
+        tildescription = findViewById(R.id.tildescription);
+        tilamount = findViewById(R.id.tilamount);
 
-        etorderdescription = (TextInputEditText) findViewById(tietdescription);
-        etamount = (TextInputEditText) findViewById(tietamount);
+        etorderdescription = findViewById(tietdescription);
+        etamount = findViewById(tietamount);
 
-        pay = (Button) findViewById(R.id.btn_payNow);
+        pay = findViewById(R.id.btn_payNow);
         etorderdescription.addTextChangedListener(new MyTextWatcher(etorderdescription));
         etamount.addTextChangedListener(new MyTextWatcher(etamount));
 
@@ -72,40 +72,40 @@ public class CheckoutActivity extends AppCompatActivity {
         requestParameters.setTerminalId("7079");
         requestParameters.setHostUrl("https://sandbox.paymentplug.com/transaction/Checkout");
 
-        pay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!validateMemberid()) {
+        pay.setOnClickListener(v ->  {
+                if (!validateMemberId()) {
                     return;
                 } else {
-                    mtransactionid = etorderdescription.getText().toString();
+                    mtransactionid = String.valueOf(etorderdescription.getText());
                     requestParameters.setMerchantTransactionId(mtransactionid);
                 }
 
                 if (!validateAmount()) {
                     return;
                 } else {
-                    amount = Float.parseFloat(etamount.getText().toString());
+                    amount = Float.parseFloat(String.valueOf(etamount.getText()));
                     requestParameters.setAmount(String.format(Locale.US, "%.2f", amount));
                 }
                 submitForm();
-            }
+
         });
     }
 
     public void submitForm() {
 
-        if (!validateMemberid()) {
+        if (!validateMemberId()) {
             return;
         }
         if (!validateAmount()) {
             return;
         }
+
+        PZCheckout.WebCheckoutListener webCheckoutListener = this;
         PZCheckout pzCheckout = new PZCheckout();
-        pzCheckout.initPayment(CheckoutActivity.this, requestParameters);
+        pzCheckout.initPayment(CheckoutActivity.this, requestParameters,webCheckoutListener);
     }
 
-    private boolean validateMemberid() {
+    private boolean validateMemberId() {
         if (etorderdescription.getText().toString().trim().isEmpty()) {
             tildescription.setError(getString(R.string.error_msg_mail));
             requestFocus(etorderdescription);
@@ -124,7 +124,6 @@ public class CheckoutActivity extends AppCompatActivity {
         } else {
             tilamount.setErrorEnabled(false);
         }
-
         return true;
     }
 
@@ -134,7 +133,25 @@ public class CheckoutActivity extends AppCompatActivity {
         }
     }
 
-    private class MyTextWatcher implements TextWatcher {
+
+    @Override
+    public void onTransactionSuccess(PayResult payResult) {
+        Intent intent = new Intent(getApplicationContext(), PaymentSuccessActivity.class);
+        intent.putExtra("result", payResult.toJsonString());
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onTransactionFail(PayResult payResult) {
+        Intent intent = new Intent(getApplicationContext(), PaymentSuccessActivity.class);
+        intent.putExtra("result", payResult.toJsonString());
+        startActivity(intent);
+
+    }
+
+
+    private static class MyTextWatcher implements TextWatcher {
 
         private View view;
 
@@ -150,35 +167,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
         @SuppressLint("NonConstantResourceId")
         public void afterTextChanged(Editable editable) {
-            /*switch (view.getId()) {
-
-                case R.id.tietdescription:
-                    validateMemberid();
-                    break;
-                case R.id.tietamount:
-                    validateAmount();
-                    break;
-
-
-                default:
-                    throw new IllegalStateException("Unexpected value: " + view.getId());
-            }*/
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // First you need to check the request code
-        if (requestCode == PZCheckout.PAYMENT_REQUEST_CODE) {
-            // After this you need to check the result code
-            if (resultCode == RESULT_OK) {
-                // If its ok, you can get the payment result as described below
-                PayResult paymentResult = (PayResult) data.getExtras().get(PZCheckout.PAYMENT_RESULT);
-                Intent intent = new Intent(getApplicationContext(), PaymentSuccessActivity.class);
-                intent.putExtra("result", paymentResult.toJsonString());
-                startActivity(intent);
-            }
         }
     }
 }
