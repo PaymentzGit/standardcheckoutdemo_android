@@ -7,9 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,6 +14,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.paymentz.checkoutexamplesdk.R;
 import com.paymentz.pz_checkout_sdk.PZCheckout;
 import com.paymentz.pz_checkout_sdk.model.PayBrand;
@@ -70,10 +71,10 @@ public class CheckoutActivity extends AppCompatActivity implements PZCheckout.We
         requestParameters.setTelnocc("091");
         requestParameters.setPhone("9854785236");
         requestParameters.setEmail("udaybhan.rajbhar@paymentz.com");
-        requestParameters.setPaymentBrand(String.valueOf(PayBrand.VISA));
-        requestParameters.setPaymentMode(String.valueOf(PayMode.CC));
+        requestParameters.setPaymentBrand("");
+        requestParameters.setPaymentMode("");
         requestParameters.setCurrency("USD");
-        requestParameters.setTerminalId("7079");
+        requestParameters.setTerminalId("");
         requestParameters.setHostUrl("https://sandbox.paymentplug.com/transaction/Checkout");
 
         pay.setOnClickListener(v ->  {
