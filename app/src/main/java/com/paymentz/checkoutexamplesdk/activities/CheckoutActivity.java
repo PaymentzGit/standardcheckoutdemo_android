@@ -59,9 +59,9 @@ public class CheckoutActivity extends AppCompatActivity implements PZCheckout.We
         etorderdescription.addTextChangedListener(new MyTextWatcher(etorderdescription));
         etamount.addTextChangedListener(new MyTextWatcher(etamount));
 
-        requestParameters.setMemberId("10558");
+        requestParameters.setMemberId("13219");
         requestParameters.setToType("paymentz");
-        requestParameters.setMemberKey("bzI93aEQeYDeE50Pa929NiDk3us8XTbU");
+        requestParameters.setMemberKey("YOiHKCvM2XSHcMEMbBrHCYzNS8iIZOi4");
         requestParameters.setOrderDescription("Testing Transaction");
         requestParameters.setCountry("IN");
         requestParameters.setCity("Mumbai");
@@ -69,13 +69,13 @@ public class CheckoutActivity extends AppCompatActivity implements PZCheckout.We
         requestParameters.setPostCode("400064");
         requestParameters.setStreet("Malad");
         requestParameters.setTelnocc("091");
-        requestParameters.setPhone("9854785236");
-        requestParameters.setEmail("udaybhan.rajbhar@paymentz.com");
+        requestParameters.setPhone("8080097168");
+        requestParameters.setEmail("tejas.gandhi@paymentz.com");
         requestParameters.setPaymentBrand("");
         requestParameters.setPaymentMode("");
-        requestParameters.setCurrency("USD");
+        requestParameters.setCurrency("INR");
         requestParameters.setTerminalId("");
-        requestParameters.setHostUrl("https://sandbox.paymentplug.com/transaction/Checkout");
+        requestParameters.setHostUrl("https://test.paymentz.com/transaction/Checkout");
 
         pay.setOnClickListener(v ->  {
                 if (!validateMemberId()) {
